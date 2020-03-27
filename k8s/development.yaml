@@ -1,0 +1,59 @@
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  generation: 2
+  labels:
+    app: angular-demo
+  name: angular-demo
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    app: angular-demo
+    deploymentconfig: angular-demo
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: angular-demo
+        deploymentconfig: angular-demo
+    spec:
+      containers:
+        - image: >-
+            image-registry.openshift-image-registry.svc:5000/demo/angular-demo:latest
+          imagePullPolicy: Always
+          name: angular-demo
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+    - type: ConfigChange
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+          - angular-demo
+        from:
+          kind: ImageStreamTag
+          name: 'angular-demo:latest'
+          namespace: demo
+          lastTriggeredImage: >-
+            image-registry.openshift-image-registry.svc:5000/demo/portal:latest
+      type: ImageChange
