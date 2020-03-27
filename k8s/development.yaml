@@ -55,5 +55,5 @@ spec:
           name: 'angular-demo:latest'
           namespace: demo
           lastTriggeredImage: >-
-            image-registry.openshift-image-registry.svc:5000/demo/portal:latest
+            image-registry.openshift-image-registry.svc:5000/demo/angular-demo:latest
       type: ImageChange
