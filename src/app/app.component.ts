@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'Openshift-v4';
+  title = 'Openshift-v4 (OCP)';
 }
